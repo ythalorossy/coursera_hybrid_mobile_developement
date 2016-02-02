@@ -41,8 +41,9 @@ angular.module('conFusion.controllers', [])
   };
 })
 
-.controller('MenuController', ['$scope', 'menuFactory', function($scope, menuFactory) {
-            
+.controller('MenuController', ['$scope', 'menuFactory', 'baseURL', function($scope, menuFactory, baseURL) {
+  
+  $scope.baseURL = baseURL;
   $scope.tab = 1;
   $scope.filtText = '';
   $scope.showDetails = false;
@@ -118,8 +119,9 @@ angular.module('conFusion.controllers', [])
 
 }])
 
-.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
-    
+.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', function($scope, $stateParams, menuFactory, baseURL) {
+  
+  $scope.baseURL = baseURL;
   $scope.dish = {};
   $scope.showDish = false;
   $scope.message="Loading ...";
@@ -155,10 +157,9 @@ angular.module('conFusion.controllers', [])
   };
 }])
 
-// implement the IndexController and About Controller here
-
-.controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory', function($scope, menuFactory, corporateFactory) {
-                                
+.controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory', 'baseURL', function($scope, menuFactory, corporateFactory, baseURL) {
+                         
+  $scope.baseURL = baseURL;
   $scope.leader = corporateFactory.get({id:3});
   $scope.showDish = false;
   $scope.message="Loading ...";
@@ -178,8 +179,8 @@ angular.module('conFusion.controllers', [])
 
 }])
 
-.controller('AboutController', ['$scope', 'corporateFactory', function($scope, corporateFactory) {
-
+.controller('AboutController', ['$scope', 'corporateFactory', 'baseURL', function($scope, corporateFactory, baseURL) {
+  $scope.baseURL = baseURL;
   $scope.leaders = corporateFactory.query();
   console.log($scope.leaders);
 

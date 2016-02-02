@@ -37,7 +37,8 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
     url: '/home',
     views: {
       'mainContent': {
-        templateUrl: 'templates/home.html'
+        templateUrl: 'templates/home.html', 
+        controller : 'IndexController'
       }
     }
   })
@@ -46,7 +47,8 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
       url: '/aboutus',
       views: {
         'mainContent': {
-          templateUrl: 'templates/aboutus.html'
+          templateUrl: 'templates/aboutus.html',
+		  controller: 'AboutController'
         }
       }
     })
@@ -58,26 +60,27 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
           templateUrl: 'templates/contactus.html'
         }
       }
-    })    
+    })
+  
     .state('app.menu', {
       url: '/menu',
       views: {
         'mainContent': {
           templateUrl: 'templates/menu.html',
-          controller: ''
+          controller: 'MenuController'
         }
       }
     })
 
-  .state('app.dishdetails', {
-    url: '/menu/:id',
-    views: {
-      'menuContent': {
+    .state('app.dishdetails', {
+      url: '/menu/:id',
+      views: {
+        'mainContent': {
         templateUrl: 'templates/dishdetail.html',
-        controller: ''
+        controller: 'DishDetailController'
       }
-    } 
-  });
+      }
+    });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 });
