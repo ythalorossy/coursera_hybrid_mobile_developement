@@ -65,8 +65,10 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
   .state('app.favorites', {
     url: '/favorites',
     views: {
-      'mainContent': 'templates/favorites.html',
-      controller: 'FavoritesController'
+      'mainContent': {
+        templateUrl: 'templates/favorites.html',
+        controller: 'FavoritesController'
+      }
     }
   })
 
