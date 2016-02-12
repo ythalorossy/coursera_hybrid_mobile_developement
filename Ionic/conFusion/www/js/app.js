@@ -5,9 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 /*global angular cordova StatusBar*/
-angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.services'])
+angular.module('conFusion', ['ionic', 'ngCordova', 'conFusion.controllers','conFusion.services'])
 
-.run(function ($ionicPlatform, $rootScope, $ionicLoading) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $cordovaSplashscreen, $timeout) {
+  
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,27 +22,32 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
       StatusBar.styleDefault();
     }
     
-    $rootScope.$on('loading:show', function () {
-      $ionicLoading.show({
-        template: '<ion-spinner><ion-spinner> Loading...'
-      });
-    })
-    
-    $rootScope.$on('loading:hide', function () {
-      $ionicLoading.hide();
-    });
-    
-    $rootScope.$on('$stateChangeStart', function () {
-      console.log("Loading...");
-      $rootScope.$broadcast('loading:show');
-    });
-    
-    $rootScope.$on('$stateChangeSuccess', function () {
-      console.log('done');
-      $rootScope.$broadcast('loading:hide');
-    });
+    $timeout(function(){
+      $cordovaSplashscreen.hide();
+    },20000);
     
   });
+  
+  $rootScope.$on('loading:show', function () {
+    $ionicLoading.show({
+      template: '<ion-spinner><ion-spinner> Loading...'
+    });
+  })
+
+  $rootScope.$on('loading:hide', function () {
+    $ionicLoading.hide();
+  });
+
+  $rootScope.$on('$stateChangeStart', function () {
+    console.log("Loading...");
+    $rootScope.$broadcast('loading:show');
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function () {
+    console.log('done');
+    $rootScope.$broadcast('loading:hide');
+  });  
+  
 })
 
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -59,7 +65,18 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
     views: {
       'mainContent': {
         templateUrl: 'templates/home.html',
-        controller: 'IndexController'
+        controller: 'IndexController',
+        resolve : {
+          leader: ['corporateFactory', function (corporateFactory) {
+            return corporateFactory.get({id: 3});
+          }],
+          dish : ['menuFactory', function (menuFactory) {
+            return menuFactory.get({id: 0});
+          }],
+          promotion: ['promotionFactory', function (promotionFactory) {
+            return  promotionFactory.get({id: 0});
+          }]
+        }
       }
     }
   })
@@ -69,7 +86,12 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
     views: {
       'mainContent': {
         templateUrl: 'templates/aboutus.html',
-        controller: 'AboutController'
+        controller: 'AboutController',
+        resolve: {
+          leaders : ['corporateFactory', function(corporateFactory){
+            return corporateFactory.query();
+          }]
+        }
       }
     }
   })
@@ -92,10 +114,13 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
         resolve : {
           dishes: ['menuFactory', function (menuFactory) {
             return menuFactory.query();
-          }],
+          }]
+          //* Removed this 'solved' in order to update the favorites in real time
+          ,
           favorites: ['favoriteFactory', function (favoriteFactory) {
             return favoriteFactory.getFavorites();
           }]
+          //*/
         }
       }
     }
@@ -106,7 +131,12 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
     views: {
       'mainContent': {
         templateUrl: 'templates/menu.html',
-        controller: 'MenuController'
+        controller: 'MenuController',
+        resolve: {
+          dishes: ['menuFactory', function (menuFactory) {
+            return menuFactory.query();
+          }]
+        }
       }
     }
   })

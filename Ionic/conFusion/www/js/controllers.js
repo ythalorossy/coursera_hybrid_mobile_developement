@@ -68,25 +68,15 @@ angular.module('conFusion.controllers', [])
 
 })
 
-.controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate',
-            function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
+.controller('MenuController', ['$scope', 'dishes', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$localStorage',
+            function ($scope, dishes, favoriteFactory, baseURL, $ionicListDelegate, $localStorage) 
+{
 
     $scope.baseURL = baseURL;
     $scope.tab = 1;
     $scope.filtText = '';
-    $scope.showDetails = false;
-    $scope.showMenu = false;
-    $scope.message = "Loading ...";
 
-    $scope.dishes = menuFactory.query(
-      function (response) {
-        $scope.dishes = response;
-        $scope.showMenu = true;
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-      });
-
+    $scope.dishes = dishes;
 
     $scope.select = function (setTab) {
       $scope.tab = setTab;
@@ -215,7 +205,7 @@ angular.module('conFusion.controllers', [])
     $scope.comment.date = new Date().toISOString();
 
     $scope.dish.comments.push($scope.comment);
-    menuFactory.getDishes().update({
+    menuFactory.update({
       id: $scope.dish.id
     }, $scope.dish);
     
@@ -263,36 +253,21 @@ angular.module('conFusion.controllers', [])
   };
 }])
 
-.controller('IndexController', ['$scope', 'menuFactory', 'promotionFactory', 'corporateFactory', 'baseURL', function ($scope, menuFactory, promotionFactory, corporateFactory, baseURL) {
+.controller('IndexController', ['$scope', 'leader', 'dish', 'promotion', 'baseURL', function ($scope, leader, dish, promotion, baseURL) {
 
   $scope.baseURL = baseURL;
-  $scope.leader = corporateFactory.get({
-    id: 3
-  });
   $scope.showDish = false;
   $scope.message = "Loading ...";
-  
-  $scope.dish = menuFactory.get({id: 0})
-    .$promise.then(
-      function (response) {
-        $scope.dish = response;
-        $scope.showDish = true;
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-      }
-    );
 
-  $scope.promotion = promotionFactory.get({
-    id: 0
-  });
+  $scope.leader = leader;
+  $scope.dish = dish;
+  $scope.promotion = promotion;
 
 }])
 
-.controller('AboutController', ['$scope', 'corporateFactory', 'baseURL', function ($scope, corporateFactory, baseURL) {
+.controller('AboutController', ['$scope', 'leaders', 'baseURL', function ($scope, leaders, baseURL) {
   $scope.baseURL = baseURL;
-  $scope.leaders = corporateFactory.query();
-  console.log($scope.leaders);
+  $scope.leaders = leaders;
 
 }])
 
@@ -302,7 +277,7 @@ function ($scope, dishes, favorites, menuFactory, favoriteFactory, baseURL, $ion
   $scope.baseURL = baseURL;
   $scope.shouldShowDelete = false;
 
-  $scope.favorites = favorites;
+  $scope.favorites = favorites;//favoriteFactory.getFavorites();
 
   $scope.dishes = dishes;
   
@@ -320,10 +295,8 @@ function ($scope, dishes, favorites, menuFactory, favoriteFactory, baseURL, $ion
 
     confirmPopup.then(function (res) {
       if (res) {
-        console.log('Ok to delete');
         favoriteFactory.deleteFromFavorites(index);
-      } else {
-        console.log('Canceled delete');
+        $scope.favorites = favoriteFactory.getFavorites();
       }
     });
     
