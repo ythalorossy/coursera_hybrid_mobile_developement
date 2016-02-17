@@ -1,7 +1,7 @@
 'use strict';
 /*global angular*/
 angular.module('conFusion.services', ['ngResource'])
-.constant("baseURL", "http://192.168.1.3:3000/")
+.constant("baseURL", "https://coursera-hybrid-mobile-developement-ythalorossy.c9users.io/")
 .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
     return $resource(baseURL + "dishes/:id", null, {
       'update': {
