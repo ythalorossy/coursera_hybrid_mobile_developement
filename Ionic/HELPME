@@ -1,0 +1,32 @@
+npm install
+bower install
+
+
+Add pplatform
+cordova platform add android
+
+Reset platforms
+ionic state reset --platforms
+
+Debug
+http://www.codeproject.com/Tips/1030830/Debug-Ionic-Android-Application-On-Mobile-Devices
+
+404 error
+https://cordova.apache.org/docs/en/latest/guide/appdev/whitelist/index.html
+ionic plugin add https://github.com/apache/cordova-plugin-whitelist.git
+
+Camera
+ionic plugin add cordova-plugin-camera
+ionic plugin add org.apache.cordova.camera
+
+Notifications
+ionic plugin add de.appplant.cordova.plugin.local-notification
+
+Toast
+ionic plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
+
+Image Picker
+cordova plugin add https://github.com/wymsee/cordova-imagePicker.git
+
+Problems after installed plugins
+https://github.com/phonegap/phonegap-plugin-push/issues/141
