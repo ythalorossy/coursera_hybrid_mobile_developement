@@ -28,5 +28,8 @@ ionic plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
 Image Picker
 cordova plugin add https://github.com/wymsee/cordova-imagePicker.git
 
+Vibration
+cordova plugin add cordova-plugin-vibration
+
 Problems after installed plugins
 https://github.com/phonegap/phonegap-plugin-push/issues/141
